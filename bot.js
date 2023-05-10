@@ -1,4 +1,5 @@
 const qrcode = require("qrcode-terminal");
+const qri = require("qr-image");
 const fs = require("fs");
 const { Client, LegacySessionAuth } = require("whatsapp-web.js");
 
@@ -9,6 +10,8 @@ const SESSION_FILE_PATH = "./session.json";
 
 client.on("qr", (qr) => {
   qrcode.generate(qr, { small: true });
+  const qr_png = qri.image(qr, { type: 'png' });
+  qr_png.pipe(require('fs').createWriteStream('qrcode.png'));
 });
 
 client.on("ready", (session) => {
